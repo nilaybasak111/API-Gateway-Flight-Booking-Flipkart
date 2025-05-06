@@ -6,7 +6,7 @@ const UserRoute = require("./user-route");
 
 const router = express.Router();
 
-router.use("/signup", UserRoute); // POST : /api/v1/signup/
+router.use("/user", UserRoute); // POST : /api/v1/user/signup/
 
 // GET : /api/v1/info
 router.get("/info", InfoController.info);
