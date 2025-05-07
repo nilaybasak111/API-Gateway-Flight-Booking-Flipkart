@@ -27,4 +27,15 @@ function createToken(input) {
   }
 }
 
-module.exports = { checkPassword, createToken };
+// This function is used to verify the JWT token
+// It takes the token as an argument and verifies it with the secret key
+function verifyToken(token) {
+  try {
+    return jwt.verify(token, ServerConfig.JWT_SECRET_KEY);
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
+module.exports = { checkPassword, createToken, verifyToken };
