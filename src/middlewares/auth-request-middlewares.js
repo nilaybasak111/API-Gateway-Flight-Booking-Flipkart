@@ -28,7 +28,9 @@ function validateAuthRequest(req, res, next) {
 
 async function checkAuth(req, res, next) {
   try{
-    const response = await UserService.isAuthenticated(req.headers['x-access-token']);
+    // Here We Split Bearer and Token
+    const token = req.headers['x-access-token'].split(" ")[1];
+    const response = await UserService.isAuthenticated(token);
     if(response){
       res.user = response; // Setting the User Id in the Response Object
       next();

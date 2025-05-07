@@ -1,6 +1,5 @@
 const CrudRepository = require("./crud-repository");
 const { User } = require("../models");
-const { where } = require("sequelize");
 
 class UserRepository extends CrudRepository {
   constructor() {
