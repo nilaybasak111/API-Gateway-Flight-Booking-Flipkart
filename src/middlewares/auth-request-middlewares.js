@@ -27,15 +27,24 @@ function validateAuthRequest(req, res, next) {
 }
 
 async function checkAuth(req, res, next) {
-  try{
+  try {
+    const bearerHeader = req.headers["x-access-token"];
+    if (!bearerHeader) {
+      throw new AppError(
+        "Token Not Found, Please Send The Correct Token",
+        StatusCodes.BAD_REQUEST
+      );
+    }
+
     // Here We Split Bearer and Token
-    const token = req.headers['x-access-token'].split(" ")[1];
+    const token = bearerHeader.split(" ")[1];
     const response = await UserService.isAuthenticated(token);
-    if(response){
+    if (response) {
       res.user = response; // Setting the User Id in the Response Object
       next();
     }
-  } catch(error){
+  } catch (error) {
+    console.log("This is error in auth-request-middlewares.checkAuth ", error);
     return res.status(error.statusCode).json(error);
   }
 }

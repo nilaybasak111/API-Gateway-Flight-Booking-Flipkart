@@ -65,6 +65,10 @@ async function isAuthenticated(token) {
 
     const response = Auth.verifyToken(token);
     const user = await userRepo.get(response.id);
+
+    // This '!user' condition usually can't be triggered because if the token is valid, the user will already exist in the database.
+    // But in Real World, if the user is deleted from the database then this can trigger
+    // So we need to check if the user is there in the database or not for Security Purpose
     if (!user) {
       throw new AppError("User Not Found", StatusCodes.NOT_FOUND);
     }
