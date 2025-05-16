@@ -40,9 +40,25 @@ async function checkAuth(req, res, next) {
     const token = bearerHeader.split(" ")[1];
     const response = await UserService.isAuthenticated(token);
     if (response) {
-      res.user = response; // Setting the User Id in the Response Object
+      req.user = response; // Setting the User Id in the Response Object
       next();
     }
+  } catch (error) {
+    console.log("This is error in auth-request-middlewares.checkAuth ", error);
+    return res.status(error.statusCode).json(error);
+  }
+}
+
+async function isAdmin(req, res, next) {
+  try {
+    const response = await UserService.isAdmin(req.user);
+    if (!response) {
+      return res.status(StatusCodes.UNAUTHORIZED).json({
+        message: "You Are Not Authorized For Access This Action",
+      });
+    }
+
+    next();
   } catch (error) {
     console.log("This is error in auth-request-middlewares.checkAuth ", error);
     return res.status(error.statusCode).json(error);
@@ -52,4 +68,5 @@ async function checkAuth(req, res, next) {
 module.exports = {
   validateAuthRequest,
   checkAuth,
+  isAdmin,
 };
