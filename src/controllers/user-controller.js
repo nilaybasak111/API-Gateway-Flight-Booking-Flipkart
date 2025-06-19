@@ -60,8 +60,21 @@ async function addRoleToUser(req, res) {
   }
 }
 
+// Fetching A User Email By Id
+async function getUserMailById(req, res) {
+  try {
+    const mailId = await UserService.getUserMailById(req.params.id);
+    SuccessResponse.data = mailId;
+    return res.status(StatusCodes.OK).json(SuccessResponse);
+  } catch (error) {
+    ErrorResponse.error = error;
+    return res.status(error.statusCode).json(ErrorResponse);
+  }
+}
+
 module.exports = {
   signup,
   signin,
   addRoleToUser,
+  getUserMailById
 };

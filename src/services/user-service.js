@@ -60,6 +60,28 @@ async function signin(data) {
   }
 }
 
+async function getUserMailById(id) {
+  try {
+    const user = await userRepo.get(id);
+    if (!user) {
+      throw new AppError(
+        "User Not Found for the Given Id",
+        StatusCodes.NOT_FOUND
+      );
+    }
+    return user.email;
+  } catch (error) {
+    if (error instanceof AppError) {
+      throw error;
+    }
+    console.log(error);
+    throw new AppError(
+      "Something Went Wrong While Fetching User Email",
+      StatusCodes.INTERNAL_SERVER_ERROR
+    );
+  }
+}
+
 async function isAuthenticated(token) {
   try {
     if (!token) {
@@ -159,4 +181,5 @@ module.exports = {
   isAuthenticated,
   addRoleToUser,
   isAdmin,
+  getUserMailById
 };

@@ -19,6 +19,9 @@ router.post(
   UserController.signin
 );
 
+// GET : /api/v1/user/:id
+router.get("/:id", UserController.getUserMailById);
+
 // POST : /api/v1/user/role/
 router.post(
   "/role",
